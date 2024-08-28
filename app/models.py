@@ -18,8 +18,8 @@ class RoomType(Base):
     __tablename__ = "room_types"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)  # Name of the room type (e.g., Single, Double, Suite)
-    description = Column(String, index=True)  # Description of the room type
+    name = Column(String, index=True)  
+    description = Column(String, index=True)  
     price_per_night = Column(Integer)
 
     rooms = relationship("Room", back_populates="room_type")

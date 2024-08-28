@@ -70,7 +70,7 @@ class User(UserBase):
 class UserRead(UserBase):
     id: int
     is_active: bool
-    reservations: List[Reservation] = []  # Fixed typo
+    reservations: List[Reservation] = []  
 
     class Config:
         from_attributes = True

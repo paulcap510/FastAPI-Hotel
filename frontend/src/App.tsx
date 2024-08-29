@@ -1,14 +1,19 @@
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar';
 import Register from './components/Register';
+import RoomTypes from './components/RoomTypes';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Hello, welcome to our hotel</h1>
-        <Register />
-      </header>
-    </div>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Register />} />
+        <Route path="/room-types" element={<RoomTypes />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

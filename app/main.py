@@ -3,10 +3,12 @@ from .database import engine
 from .models import Base 
 from .middleware import cors
 from .routers import users, rooms
+from .middleware import cors
 
 app = FastAPI()
 
-#todo: prefix `/users` or no? Check pikoshi
+cors.add_cors_middleware(app)
+
 app.include_router(users.router)  
 app.include_router(rooms.router, prefix="/rooms") 
 

@@ -27,12 +27,11 @@ def register_by_email(user: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
 
     hashed_password = hash_password(user.password.get_secret_value())
-    new_user = User(email=user.email, hashed_password=hashed_password, is_active=False)  # Initially inactive
+    new_user = User(email=user.email, hashed_password=hashed_password, is_active=False) 
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
 
-    # Generate verification token and send verification email
     token = create_verification_token(new_user.email)
     send_verification_email(new_user.email, token)
 

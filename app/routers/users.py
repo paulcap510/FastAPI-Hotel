@@ -1,16 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 from fastapi.responses import JSONResponse
-from pydantic import EmailStr
 from ..database import get_db
-from ..schemas import UserCreate
+from ..schemas import UserCreate, UserRead  # Added UserRead
 from ..models import User
 from ..utils.auth import hash_password, generate_sha256_hash, get_user_by_email
-from ..utils.email import send_signup_email
+# from ..utils.email import send_signup_email  # Commented out for now
 from fastapi.encoders import jsonable_encoder
 import redis
 
 router = APIRouter()
+
+# Initialize Redis
+redis_client = redis.Redis(host='localhost', port=6379, db=0)
 
 @router.post("/register", response_model=UserRead)
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
@@ -41,19 +43,19 @@ async def register_by_email(
 
     # for testing 
     activation_link = f"http://localhost:5173/verify-email/?token={token}"
-    html_template = """
-    <html>
-    <body>
-    <p>Thank you for registering! Please click the link below to verify your email address:</p>
-    <a href="{activation_link}">Verify Email</a>
-    </body>
-    </html>
-    """
-    html_content = html_template.format(activation_link=activation_link)
+    # html_template = """
+    # <html>
+    # <body>
+    # <p>Thank you for registering! Please click the link below to verify your email address:</p>
+    # <a href="{activation_link}">Verify Email</a>
+    # </body>
+    # </html>
+    # """
+    # html_content = html_template.format(activation_link=activation_link)
        
-    background_tasks.add_task(send_signup_email, user_email, html_content)
+    # background_tasks.add_task(send_signup_email, user_email, html_content)
     
-    jsonMsg = jsonable_encoder({"message": "Verification email has been sent."})
+    jsonMsg = jsonable_encoder({"message": "Verification email has been sent.", "activation_link": activation_link})
     return JSONResponse(status_code=200, content=jsonMsg)
 
 

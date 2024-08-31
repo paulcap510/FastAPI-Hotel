@@ -12,7 +12,9 @@ import hashlib
 
 load_dotenv()
 
-pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto') 
+# pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto') 
+pwd_context = CryptContext(schemes=['argon2'], deprecated='auto')
+
 
 SECRET_KEY = os.getenv("SECRET_KEY")  
 ALGORITHM = "HS256"

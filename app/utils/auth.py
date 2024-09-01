@@ -73,3 +73,15 @@ def generate_sha256_hash(data: str) -> str:
 
 def get_user_by_email(db: Session, email: str) -> User:
     return db.query(User).filter(User.email == email).first()
+
+def create_verification_token(email: str) -> str:
+    expire = datetime.utcnow() + timedelta(hours=24)
+    
+    payload = {
+        "sub": email,
+        "exp": expire
+    }
+    
+    token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+    
+    return token

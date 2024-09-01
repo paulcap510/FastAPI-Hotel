@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +26,7 @@ const Login: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.access_token);
+        login(data.access_token);
       } else {
         const errorData = await response.json();
         setError(errorData.detail || 'Invalid email or password');
